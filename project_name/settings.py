@@ -27,6 +27,8 @@ class Common(Configuration):
 
     # Application definition
     INSTALLED_APPS = [
+        'rest_framework',
+        'backend',
         'django.contrib.admin',
         'django.contrib.auth',
         'django.contrib.contenttypes',
