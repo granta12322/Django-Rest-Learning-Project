@@ -19,11 +19,16 @@ from TestApp import views
 
 
 urlpatterns = [
+    path('',views.api_root,name='root'),
     path('admin/', admin.site.urls),
     path('events/', views.event_list, name = "event-list"),
-    path('event/<int:event_id>',views.event_show, name = "event-show"),
+    path('event/<int:event_id>/',views.event_show, name = "event-show"),
+    path('ticket/<int:ticket_id>/event',views.TicketEventView.as_view(), name = "ticket_event-show"),
     path('event_create/',views.event_create, name = "event-create"),
     path('tickets/', views.ticket_list, name = "ticket-list"),
     path('ticket/<int:ticket_id>',views.ticket_show, name = "ticket-show"),
-    path('ticket_create/',views.ticket_create, name = "ticket-create")
+
+    path('ticket_create/',views.ticket_create, name = "ticket-create"),
+    path('users/', views.UserList.as_view(), name = "user-list"),
+    path('user/<int:user_id>',views.UserDetail.as_view(), name = "user-show")
 ]
