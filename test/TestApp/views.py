@@ -36,6 +36,11 @@ class EventViewSet(viewsets.ModelViewSet):
         event = get_object_or_404(queryset, pk = pk)
         serializer = EventSerializer(event,context = {'request': request})
 
+    def perform_create(self):
+        queryset = Event.objects.all()
+        serializer = EventSerializer(data = self.request.data)
+        serializer.save(organiser = self.request.user)
+
 
 class UserViewSet(viewsets.ModelViewSet):
 
@@ -51,6 +56,8 @@ class UserViewSet(viewsets.ModelViewSet):
         user = get_object_or_404(queryset, pk = pk)
         serializer = UserSerializer(user,context = {'request': request})
 
+   
+
 
 class TicketViewSet(viewsets.ModelViewSet):
 
@@ -63,6 +70,10 @@ class TicketViewSet(viewsets.ModelViewSet):
         queryset = Ticket.objects.all()
         ticket = get_object_or_404(queryset, pk = pk)
         serializer = TicketSerializer(ticket,context = {'request': request})
+
+    def perform_create(self,serializer):
+        serializer.save()
+
 
         
 
