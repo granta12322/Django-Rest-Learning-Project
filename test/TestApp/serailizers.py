@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
         field = ['id','username','events']
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
-    organiser = serializers.HyperlinkedRelatedField(view_name='user', read_only = True)
+    organiser = serializers.HyperlinkedRelatedField(view_name='user-detail', read_only = True)
     class Meta:
         model = Event
         fields = '__all__'
@@ -21,7 +21,7 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class TicketSerializer(serializers.HyperlinkedModelSerializer):
-    event = serializers.HyperlinkedRelatedField(view_name='event', read_only = True)
+    event = serializers.HyperlinkedRelatedField(view_name='event-detail', read_only = True)
 
     class Meta:
         model = Ticket
