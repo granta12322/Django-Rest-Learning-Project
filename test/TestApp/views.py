@@ -64,21 +64,17 @@ class TicketList(generics.ListCreateAPIView):
 
 class TicketEventView(generics.GenericAPIView):
     queryset = Ticket.objects.all()
-    renderer_classes = [renderers.StaticHTMLRenderer]
 
     def get(self,request, *args, **kwargs):
-        serializer_context = {
-            'request': request,
-        }
         ticket = self.get_object()
-        ticket = TicketSerializer(ticket,context = serializer_context)
-        return Response(ticket.event)
+        ticket = TicketSerializer(ticket,context = {'request': request})
+        return JsonResponse(ticket.event)
 
     
 
 def event_list(request):
     events = Event.objects.all()
-    serializer = EventSerializer(events, many=True)
+    serializer = EventSerializer(events, many=True,context = {'request': request})
     return JsonResponse(serializer.data, safe = False)
 
 def event_create(request):
@@ -91,7 +87,7 @@ def event_create(request):
 
 def event_show(request,event_id):
     event = Event.objects.get(id=event_id)
-    serializer = EventSerializer(event,many = False)
+    serializer = EventSerializer(event,many = False, context = {'request': request})
     return JsonResponse(serializer.data, safe = False)
 
 
