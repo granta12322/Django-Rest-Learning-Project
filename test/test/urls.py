@@ -15,20 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from rest_framework.routers import DefaultRouter
 from TestApp import views
 
-
+router = DefaultRouter()
+router.register(r'users',views.UserViewSet,basename='user')
+router.register(r'events',views.EventViewSet,basename='event')
+router.register(r'ticket',views.TicketViewSet,basename='ticket')
 urlpatterns = [
     path('',views.api_root,name='root'),
     path('admin/', admin.site.urls),
-    path('events/', views.event_list, name = "event-list"),
-    path('event/<int:event_id>/',views.event_show, name = "event-show"),
-    path('ticket/<int:ticket_id>/event',views.TicketEventView.as_view(), name = "ticket_event-show"),
-    path('event_create/',views.event_create, name = "event-create"),
-    path('tickets/', views.ticket_list, name = "ticket-list"),
-    path('ticket/<int:ticket_id>',views.ticket_show, name = "ticket-show"),
-
-    path('ticket_create/',views.ticket_create, name = "ticket-create"),
-    path('users/', views.UserList.as_view(), name = "user-list"),
-    path('user/<int:user_id>',views.UserDetail.as_view(), name = "user-show")
 ]
+
+urlpatterns += router.urls
