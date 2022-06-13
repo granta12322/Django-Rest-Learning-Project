@@ -1,8 +1,9 @@
+from rest_framework.decorators import action
 from multiprocessing import context
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from rest_framework.parsers import JSONParser
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from .models import Event, Ticket
 from .serailizers import EventSerializer, TicketSerializer, UserSerializer
 from django.contrib.auth.models import User
@@ -21,6 +22,50 @@ def api_root(request, format=None):
         'users': reverse('user-list', request=request, format=format),
         'events': reverse('event-list', request=request, format=format)
     })
+
+
+class EventViewSet(viewsets.ModelViewSet):
+
+    def list(self, request):
+        queryset = Event.objects.all()
+        serializer = EventSerializer(context = {'request': request})
+        return JsonResponse(serializer.data)
+    
+    def retrieve(self, request, pk = None):
+        queryset = Event.objects.all()
+        event = get_object_or_404(queryset, pk = pk)
+        serializer = EventSerializer(event,context = {'request': request})
+
+
+class UserViewSet(viewsets.ModelViewSet):
+
+    
+    def list(self, request):
+        queryset = User.objects.all()
+        serializer = UserSerializer(context = {'request': request})
+        return JsonResponse(serializer.data)
+    
+    
+    def retrieve(self, request, pk = None):
+        queryset = User.objects.all()
+        user = get_object_or_404(queryset, pk = pk)
+        serializer = UserSerializer(user,context = {'request': request})
+
+
+class TicketViewSet(viewsets.ModelViewSet):
+
+    def list(self, request):
+        queryset = Ticket.objects.all()
+        serializer = TicketSerializer(context = {'request': request})
+        return JsonResponse(serializer.data)
+    
+    def retrieve(self, request, pk = None):
+        queryset = Ticket.objects.all()
+        ticket = get_object_or_404(queryset, pk = pk)
+        serializer = TicketSerializer(ticket,context = {'request': request})
+
+        
+
 
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()
