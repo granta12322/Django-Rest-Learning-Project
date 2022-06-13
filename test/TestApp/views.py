@@ -28,13 +28,16 @@ class EventViewSet(viewsets.ModelViewSet):
 
     def list(self, request):
         queryset = Event.objects.all()
-        serializer = EventSerializer(context = {'request': request})
-        return JsonResponse(serializer.data)
+        print(queryset)
+        serializer = EventSerializer(many=True, context = {'request': request})
+        print(serializer.data)
+        return JsonResponse(serializer.data, safe = False)
     
     def retrieve(self, request, pk = None):
         queryset = Event.objects.all()
         event = get_object_or_404(queryset, pk = pk)
         serializer = EventSerializer(event,context = {'request': request})
+        return JsonResponse(serializer.data,safe=False)
 
     def perform_create(self):
         queryset = Event.objects.all()

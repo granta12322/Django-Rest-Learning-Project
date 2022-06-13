@@ -13,7 +13,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
     organiser = serializers.HyperlinkedRelatedField(view_name='user', read_only = True)
-
     class Meta:
         model = Event
         fields = '__all__'
